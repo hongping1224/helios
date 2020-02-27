@@ -21,7 +21,7 @@ public class SebEvents {
 	}
 	
 	public void addListener(String eventName, EventListener listener) {
-		
+	    System.out.println("adding event :" +eventName);
 		if (!listeners.containsKey(eventName)) {
 			listeners.put(eventName, new ArrayList<EventListener>());
 		}

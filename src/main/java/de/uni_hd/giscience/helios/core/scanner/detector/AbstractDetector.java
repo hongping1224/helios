@@ -22,7 +22,9 @@ public abstract class AbstractDetector {
 	public double cfg_device_rangeMin_m = 0;
 
 	// File output:
-	String outputFileLineFormatString = "%.3f %.3f %.3f %.4f %.4f %d %d %d %s %d";
+	// String outputFileLineFormatString = "%.3f %.3f %.3f %.4f %.4f %d %d %d %s
+	// %d";
+	String outputFileLineFormatString = "%.4f %.4f %.4f %s";
 	BufferedWriter mPointsFileWriter = null;
 
 	String outputFilePath;
@@ -40,10 +42,12 @@ public abstract class AbstractDetector {
 	public void applySettings(ScannerSettings settings) {
 	}
 
-	// ATTENTION: This method needs to be synchronized since multiple threads are writing to the output file!
+	// ATTENTION: This method needs to be synchronized since multiple threads are
+	// writing to the output file!
 	public synchronized void setOutputFilePath(String path) {
 
-		// ATTENTION: There's a chance that closing the pointsFileWriter triggers an exception since other
+		// ATTENTION: There's a chance that closing the pointsFileWriter triggers an
+		// exception since other
 		// threads might still write to it.
 
 		if (mPointsFileWriter != null) {
@@ -75,7 +79,8 @@ public abstract class AbstractDetector {
 		}
 	}
 
-	public abstract void simulatePulse(ExecutorService execService, Vector3D absoluteBeamOrigin, Rotation absoluteBeamAttitude, int state_currentPulseNumber, long currentGpsTime);
+	public abstract void simulatePulse(ExecutorService execService, Vector3D absoluteBeamOrigin,
+			Rotation absoluteBeamAttitude, int state_currentPulseNumber, long currentGpsTime);
 
 	synchronized public void shutdown() {
 
@@ -84,7 +89,9 @@ public abstract class AbstractDetector {
 				mPointsFileWriter.flush();
 				mPointsFileWriter.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				if (e.getMessage() != "Stream closed") {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -97,7 +104,8 @@ public abstract class AbstractDetector {
 
 			Vector3D shifted = m.position.add(scanner.platform.scene.getShift());
 
-			String line = String.format(outputFileLineFormatString, shifted.getX(), shifted.getY(), shifted.getZ(), m.intensity, m.echo_width, m.returnNumber, m.pulseReturnNumber, m.fullwaveIndex, m.hitObjectId, m.classification);
+			String line = String.format(outputFileLineFormatString, shifted.getX(), shifted.getY(), shifted.getZ(),
+					m.hitObjectId);
 
 			line += "\n";
 
@@ -109,20 +117,22 @@ public abstract class AbstractDetector {
 		}
 		// ############# END Write measured point to output file ############
 	}
-	
+
 	public synchronized void writeMeasurements(Measurement[] ms) {
 
 		// ############# BEGIN Write measured point to output file ############
 		if (mPointsFileWriter != null) {
 
-			for(Measurement m: ms) {
-			
+			for (Measurement m : ms) {
+
 				Vector3D shifted = m.position.add(scanner.platform.scene.getShift());
-	
-				String line = String.format(outputFileLineFormatString, shifted.getX(), shifted.getY(), shifted.getZ(), m.intensity, m.echo_width, m.returnNumber, m.pulseReturnNumber, m.fullwaveIndex, m.hitObjectId, m.classification);
-	
+
+				String line = String.format(outputFileLineFormatString, shifted.getX(), shifted.getY(), shifted.getZ(),
+						m.intensity, m.echo_width, m.returnNumber, m.pulseReturnNumber, m.fullwaveIndex, m.hitObjectId,
+						m.classification);
+
 				line += "\n";
-	
+
 				try {
 					mPointsFileWriter.write(line);
 				} catch (IOException e) {
