@@ -3,18 +3,15 @@
 > Heidelberg LiDAR Operations Simulator (HELIOS)
 
 HELIOS is a software package for interactive real-time simulation and visualization of terrestrial, mobile and airborne laser scanning surveys written in Java. Official website: https://www.uni-heidelberg.de/helios
+This is a forked version which used to single ray pulse and simplify the output to only XYZ & ObjectID
 
 [![HELIOS](http://img.youtube.com/vi/1SOg7b5q4ak/0.jpg)](https://www.youtube.com/watch?v=1SOg7b5q4ak "HELIOS")
 
 ## Table of Contents
-- [Install](#install)
 - [Usage](#usage)
 - [Documentation](#documentation)
 - [Authorship](#authorship)
 - [License](#license)
-
-## Install
-The pre-built project is available [here](https://heibox.uni-heidelberg.de/f/06bb612921/?raw=1) with a test scene and survey. Note that for faster simulations **building the project is recommended**. 
 
 To build the project, first install the dependencies, then compile the source code, and finally execute it.
 
@@ -61,7 +58,7 @@ You may also want to disable the spell checker: right click in the project > *Ch
 
 ## Usage
 
-HELIOS supports both single-ray and full-waveform simulations. Currently the default mode is the full-waveform. The selection between this two methods is done in the source code when creating the detector object in [*XmlAssetsLoader.java*](src/main/java/de/uni_hd/giscience/helios/assetsloading/XmlAssetsLoader.java). 
+HELIOS supports both single-ray and full-waveform simulations. Currently the default mode is the single-ray. The selection between this two methods is done in the source code when creating the detector object in [*XmlAssetsLoader.java*](src/main/java/de/uni_hd/giscience/helios/assetsloading/XmlAssetsLoader.java). 
 
 ### Input
 
