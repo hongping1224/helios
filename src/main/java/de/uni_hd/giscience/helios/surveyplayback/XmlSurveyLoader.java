@@ -222,7 +222,8 @@ public class XmlSurveyLoader extends XmlAssetsLoader {
 		}
 		else {		
 			scene = (Scene) getAssetByLocation("scene", sceneString);
-			scene.writeObject(sceneObjPath);
+			//never write scene bin
+			//scene.writeObject(sceneObjPath);
 		}
 		
 		if (scene == null) {
